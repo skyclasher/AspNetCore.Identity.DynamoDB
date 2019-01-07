@@ -30,47 +30,40 @@ namespace IdentitySample
 		public IConfiguration Configuration { get; }
 
 		public void ConfigureServices(IServiceCollection services)
-		{
-			services.Configure<DynamoDbSettings>(Configuration.GetSection("DynamoDB"));
+        {
+            services.Configure<DynamoDbSettings>(Configuration.GetSection("DynamoDB"));
 
-			services.Configure<CookiePolicyOptions>(options =>
-			{
-				// This lambda determines whether user consent for non-essential cookies is needed for a given request.
-				options.CheckConsentNeeded = context => true;
-				options.MinimumSameSitePolicy = SameSiteMode.None;
-			});
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
 
-			// Services used by identity
-			services.AddAuthentication()
-				.AddGoogle(options =>
-				{
-					options.ClientId = "609695036148-vacck6ur8cf5sk0uv145pa962qfsdk6c.apps.googleusercontent.com";
-					options.ClientSecret = "VqJhjh9w_tvSahjzeOkWzv3n";
-				})
-				.AddFacebook(options =>
-				{
-					options.AppId = "901611409868059";
-					options.AppSecret = "4aa3c530297b1dcebc8860334b39668b";
-				}).AddTwitter(options =>
-				{
-					options.ConsumerKey = "BSdJJ0CrDuvEhpkchnukXZBUv";
-					options.ConsumerSecret = "xKUNuKhsRdHD03eLn67xhPAyE1wFFEndFo1X2UJaK2m1jdAxf4";
-				});
+            // Services used by identity
+            services.AddAuthentication()
+                .AddGoogle(options =>
+                {
+                    options.ClientId = "609695036148-vacck6ur8cf5sk0uv145pa962qfsdk6c.apps.googleusercontent.com";
+                    options.ClientSecret = "VqJhjh9w_tvSahjzeOkWzv3n";
+                })
+                .AddFacebook(options =>
+                {
+                    options.AppId = "901611409868059";
+                    options.AppSecret = "4aa3c530297b1dcebc8860334b39668b";
+                }).AddTwitter(options =>
+                {
+                    options.ConsumerKey = "BSdJJ0CrDuvEhpkchnukXZBUv";
+                    options.ConsumerSecret = "xKUNuKhsRdHD03eLn67xhPAyE1wFFEndFo1X2UJaK2m1jdAxf4";
+                });
 
-			services.AddDefaultIdentity<DynamoIdentityUser>()
-				.AddRoles<DynamoIdentityRole>()
-				.AddDefaultTokenProviders();
+            services.AddDynamoDbIdentity();
 
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+        }
 
-			services.AddSingleton<DynamoRoleUsersStore<DynamoIdentityRole, DynamoIdentityUser>, DynamoRoleUsersStore<DynamoIdentityRole, DynamoIdentityUser>>();
-			services.AddSingleton<IUserStore<DynamoIdentityUser>, DynamoUserStore<DynamoIdentityUser, DynamoIdentityRole>>();
-			services.AddSingleton<IRoleStore<DynamoIdentityRole>, DynamoRoleStore<DynamoIdentityRole>>();
-
-			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-		}
-
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 		{
 			if (env.IsDevelopment())
 			{
