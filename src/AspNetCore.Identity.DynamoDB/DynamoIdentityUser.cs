@@ -60,17 +60,20 @@ namespace AspNetCore.Identity.DynamoDB
 		[DynamoDBHashKey]
 		public string Id { get; set; }
 
+        [PersonalData]
 		public string UserName { get; set; }
 
 		[DynamoDBGlobalSecondaryIndexHashKey("NormalizedUserName-DeletedOn-index")]
 		public string NormalizedUserName { get; set; }
 
+        [PersonalData]
 		public DynamoUserEmail Email { get; set; }
 
 		[DynamoDBGlobalSecondaryIndexHashKey("NormalizedEmail-DeletedOn-index")]
 		public string NormalizedEmail { get; set; }
 
-		public DynamoUserPhoneNumber PhoneNumber { get; set; }
+        [PersonalData]
+        public DynamoUserPhoneNumber PhoneNumber { get; set; }
 		public string PasswordHash { get; set; }
 		public string SecurityStamp { get; set; }
 		public bool IsTwoFactorEnabled { get; set; }

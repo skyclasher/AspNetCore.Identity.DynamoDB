@@ -777,7 +777,8 @@ namespace AspNetCore.Identity.DynamoDB
 
 			if (userTableName != Constants.DefaultTableName)
 			{
-				AWSConfigsDynamoDB.Context.AddAlias(new TableAlias(userTableName, Constants.DefaultTableName));
+				//AWSConfigsDynamoDB.Context.AddAlias(new TableAlias(userTableName, Constants.DefaultTableName));
+				AWSConfigsDynamoDB.Context.AddAlias(new TableAlias(Constants.DefaultTableName, userTableName));
 			}
 
 			return EnsureInitializedImplAsync(client, userTableName);

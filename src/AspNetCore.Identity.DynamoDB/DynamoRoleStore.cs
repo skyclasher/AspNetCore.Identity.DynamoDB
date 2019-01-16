@@ -208,7 +208,7 @@ namespace AspNetCore.Identity.DynamoDB
 
 			if (rolesTableName != Constants.DefaultRolesTableName)
 			{
-				AWSConfigsDynamoDB.Context.AddAlias(new TableAlias(rolesTableName, Constants.DefaultRolesTableName));
+				AWSConfigsDynamoDB.Context.AddAlias(new TableAlias(Constants.DefaultRolesTableName,rolesTableName));
 			}
 
 			return EnsureInitializedImplAsync(client, rolesTableName);
