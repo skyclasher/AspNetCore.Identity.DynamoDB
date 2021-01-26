@@ -1,13 +1,14 @@
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
+using Amazon.Runtime;
 using AspNetCore.Identity.DynamoDB;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
 namespace IdentitySample
@@ -30,45 +31,28 @@ namespace IdentitySample
 		public IConfiguration Configuration { get; }
 
 		public void ConfigureServices(IServiceCollection services)
-        {
-            services.Configure<DynamoDbSettings>(Configuration.GetSection("DynamoDB"));
+		{
+			services.Configure<DynamoDbSettings>(Configuration.GetSection("DynamoDB"));
 
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
+			services.Configure<CookiePolicyOptions>(options =>
+			{
+				// This lambda determines whether user consent for non-essential cookies is needed for a given request.
+				options.CheckConsentNeeded = context => true;
+				options.MinimumSameSitePolicy = SameSiteMode.None;
+			});
 
-            // Services used by identity
-            services.AddAuthentication()
-                .AddGoogle(options =>
-                {
-                    options.ClientId = "609695036148-vacck6ur8cf5sk0uv145pa962qfsdk6c.apps.googleusercontent.com";
-                    options.ClientSecret = "VqJhjh9w_tvSahjzeOkWzv3n";
-                })
-                .AddFacebook(options =>
-                {
-                    options.AppId = "901611409868059";
-                    options.AppSecret = "4aa3c530297b1dcebc8860334b39668b";
-                }).AddTwitter(options =>
-                {
-                    options.ConsumerKey = "BSdJJ0CrDuvEhpkchnukXZBUv";
-                    options.ConsumerSecret = "xKUNuKhsRdHD03eLn67xhPAyE1wFFEndFo1X2UJaK2m1jdAxf4";
-                });
 
-            services.AddDynamoDbIdentity();
+			services.AddDynamoDbIdentity();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-        }
+			services.AddMvc(options => options.EnableEndpointRouting = false);
+		}
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		public void Configure(IApplicationBuilder app, IHostEnvironment env)
 		{
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
-				app.UseDatabaseErrorPage();
 			}
 			else
 			{
@@ -85,12 +69,15 @@ namespace IdentitySample
 			app.UseMvc();
 
 			var options = app.ApplicationServices.GetService<IOptions<DynamoDbSettings>>();
+
+			var credentials = new BasicAWSCredentials("test", "test");
 			var client = env.IsDevelopment()
-				? new AmazonDynamoDBClient(new AmazonDynamoDBConfig
+				? new AmazonDynamoDBClient(credentials, new AmazonDynamoDBConfig
 				{
 					ServiceURL = options.Value.ServiceUrl
 				})
 				: new AmazonDynamoDBClient();
+
 			var context = new DynamoDBContext(client);
 
 			var userStore = app.ApplicationServices
@@ -105,6 +92,7 @@ namespace IdentitySample
 			userStore.EnsureInitializedAsync(client, context, options.Value.UsersTableName).Wait();
 			roleStore.EnsureInitializedAsync(client, context, options.Value.RolesTableName).Wait();
 			roleUsersStore.EnsureInitializedAsync(client, context, options.Value.RoleUsersTableName).Wait();
+
 		}
 	}
 }

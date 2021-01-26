@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26206.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".root", ".root", "{B45D8ABC-3D21-4A15-9F79-8A19A164CF27}"
 	ProjectSection(SolutionItems) = preProject
@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".root", ".root", "{B45D8ABC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{E2179992-0698-4A64-AEAE-55FF33A2C14D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentitySample.Mvc", "samples\IdentitySample.Mvc\IdentitySample.Mvc.csproj", "{E1BFA023-CFFD-49CE-8466-1C28DD2EC1F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentitySample.Mvc", "samples\IdentitySample.Mvc\IdentitySample.Mvc.csproj", "{E1BFA023-CFFD-49CE-8466-1C28DD2EC1F6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{0F567567-75BD-499E-B137-3B60F74E483F}"
 	ProjectSection(SolutionItems) = preProject
@@ -26,9 +26,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{0F5675
 		scripts\set-build-version.sh = scripts\set-build-version.sh
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCore.Identity.DynamoDB", "src\AspNetCore.Identity.DynamoDB\AspNetCore.Identity.DynamoDB.csproj", "{593AA3BD-ED1D-493E-833F-2AB840FC322C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCore.Identity.DynamoDB", "src\AspNetCore.Identity.DynamoDB\AspNetCore.Identity.DynamoDB.csproj", "{593AA3BD-ED1D-493E-833F-2AB840FC322C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCore.Identity.DynamoDB.Tests", "tests\AspNetCore.Identity.DynamoDB.Tests\AspNetCore.Identity.DynamoDB.Tests.csproj", "{0C0D868B-510B-40B8-BE39-917287C241F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCore.Identity.DynamoDB.Tests", "tests\AspNetCore.Identity.DynamoDB.Tests\AspNetCore.Identity.DynamoDB.Tests.csproj", "{0C0D868B-510B-40B8-BE39-917287C241F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,5 +54,8 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E1BFA023-CFFD-49CE-8466-1C28DD2EC1F6} = {E2179992-0698-4A64-AEAE-55FF33A2C14D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2CD296E7-6D21-416E-9FF5-238DEC6EB187}
 	EndGlobalSection
 EndGlobal
